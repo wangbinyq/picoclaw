@@ -691,6 +691,40 @@ Useful runtime facts:
 - gateway health endpoints expose `/health`, `/ready`, and `/reload`.
 - `tool_feedback` can publish visible tool-execution notices directly into chats.
 
+### Where to Find Logs
+
+For gateway and runtime debugging, PicoClaw writes logs under its home directory:
+
+```text
+~/.picoclaw/logs/gateway.log
+~/.picoclaw/logs/gateway_panic.log
+```
+
+If `PICOCLAW_HOME` is overridden, use:
+
+```text
+$PICOCLAW_HOME/logs/gateway.log
+$PICOCLAW_HOME/logs/gateway_panic.log
+```
+
+In practice, check these places first:
+
+- `~/.picoclaw/logs/` for persisted gateway logs
+- the terminal running `picoclaw gateway` or `picoclaw agent`
+- Docker stdout/stderr via `docker compose -f docker/docker-compose.yml logs -f`
+- launcher or service logs if PicoClaw is being run under another supervisor
+
+Useful controls:
+
+- `picoclaw gateway --debug` for detailed runtime logs
+- `picoclaw gateway --debug --no-truncate` for full prompt/tool payload inspection
+- `gateway.log_level` or `PICOCLAW_LOG_LEVEL` to raise verbosity to `debug` or `info`
+
+Special case:
+
+- the standalone `picoclaw agent` command uses console logging unless `PICOCLAW_LOG_FILE` is set explicitly
+- process hooks can write JSONL file logs when `PICOCLAW_HOOK_LOG_FILE` is set; this is hook-specific and separate from the main gateway log path
+
 ## Repository Map
 
 When contributing code, these paths matter most:
