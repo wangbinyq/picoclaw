@@ -88,7 +88,10 @@ func (al *AgentLoop) UnsubscribeEvents(id uint64) {
 	if !ok {
 		return
 	}
-	sub := value.(legacyEventSubscription)
+	sub, ok := value.(legacyEventSubscription)
+	if !ok {
+		return
+	}
 	sub.cancel()
 	if sub.sub != nil {
 		_ = sub.sub.Close()
